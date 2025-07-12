@@ -73,3 +73,22 @@ To use the Swift Gmail client in your application, follow these steps:
 5. The call pattern mirrors the Google Gmail REST resources, so you can refer to the
    [Gmail API documentation](https://developers.google.com/gmail/api/reference/rest) for more details on available
    methods and their parameters.
+
+## Testing
+
+To run the tests, you can use the following command in your terminal:
+
+```bash
+swift test
+```
+
+You will need to set up some OAuth credentials. You can do this by creating a `.env` file and adding the following lines:
+
+```
+GMAIL_OAUTH_ACCESS_TOKEN=<YOUR_ACCESS_TOKEN>
+GMAIL_OAUTH_REFRESH_TOKEN=<YOUR_REFRESH_TOKEN>
+```
+
+Alternatively, you can set the environment variables directly in your terminal.
+
+I would like to improve this in the future, but for now, this is the best way to test the library.

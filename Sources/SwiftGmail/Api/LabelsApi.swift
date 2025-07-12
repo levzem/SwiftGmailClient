@@ -20,6 +20,13 @@ struct LabelsApi {
         )
     }
 
+    public func get(labelId: String) async -> Result<FullLabel, ApiError> {
+        return await apiClient.get(
+            endpoint: "/users/me/labels/\(labelId)",
+            responseType: FullLabel.self
+        )
+    }
+
     public func list() async -> Result<ListLabelsResponse, ApiError> {
         return await apiClient.get(
             endpoint: "/users/me/labels",
@@ -28,7 +35,7 @@ struct LabelsApi {
     }
 
     public func update(request: UpdateLabelRequest) async -> Result<Label, ApiError> {
-        return await apiClient.update(
+        return await apiClient.put(
             endpoint: "/users/me/labels/\(request.id)",
             request: request,
             responseType: Label.self
@@ -65,11 +72,19 @@ public struct UpdateLabelRequest: Codable {
 }
 
 // MARK: - Models
-public struct Label: Codable {
+public struct Label: Codable, Equatable {
     let id: String
     let name: String
-    let messageListVisibility: MessageListVisibility
-    let labelListVisibility: LabelListVisibility
+    let labelListVisibility: LabelListVisibility?
+    let messageListVisibility: MessageListVisibility?
+    let type: Type?
+}
+
+public struct FullLabel: Codable, Equatable {
+    let id: String
+    let name: String
+    let labelListVisibility: LabelListVisibility?
+    let messageListVisibility: MessageListVisibility?
     let type: Type
     let messagesTotal: Int
     let messagesUnread: Int

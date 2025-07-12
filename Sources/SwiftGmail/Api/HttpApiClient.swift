@@ -39,13 +39,13 @@ class HttpApiClient {
         )
     }
 
-    func update<T: Decodable>(
+    func put<T: Decodable>(
         endpoint: String,
         request: Codable,
         responseType: T.Type
     ) async -> Result<T, ApiError> {
         return await send(
-            httpMethod: .update,
+            httpMethod: .put,
             endpoint: endpoint,
             request: request,
             responseType: responseType
@@ -90,10 +90,14 @@ class HttpApiClient {
         }.flatMap { (dataResponse: (Data, URLResponse)) in
             let (data, response) = dataResponse
             guard let httpResponse = response as? HTTPURLResponse else {
-                return Result<T, ApiError>.failure(ApiError.invalidResponse)
+                return .failure(ApiError.invalidResponse)
             }
 
-            guard httpResponse.statusCode == 200 else {
+            if httpResponse.statusCode == 204 && responseType == EmptyResponse.self {
+                return .success(EmptyResponse() as! T)
+            }
+
+            guard httpResponse.statusCode <= 299 else {
                 Self.LOGGER.error(
                     "Failed \(httpMethod.rawValue) to \(endpoint): \(httpResponse.statusCode)"
                 )
@@ -115,13 +119,13 @@ enum HttpMethod: String {
     case delete = "DELETE"
     case get = "GET"
     case post = "POST"
-    case update = "UPDATE"
+    case put = "PUT"
 }
 
 public struct EmptyResponse: Codable {
 }
 
-public enum ApiError: Error {
+public enum ApiError: Error, Equatable {
     case invalidResponse
     case serializationError(message: String)
     case failedRequest(httpCode: Int)
