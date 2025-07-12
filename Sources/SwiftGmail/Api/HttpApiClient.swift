@@ -1,0 +1,139 @@
+import Foundation
+import os
+
+class HttpApiClient {
+    private static let LOGGER: Logger = Logger.logger(HttpApiClient.self)
+
+    var accessToken: String
+    var refreshToken: String
+    let apiUrl: URL
+
+    init(apiUrl: URL, accessToken: String, refreshToken: String) {
+        self.apiUrl = apiUrl
+        self.accessToken = accessToken
+        self.refreshToken = refreshToken
+    }
+
+    func delete(endpoint: String) async -> Result<EmptyResponse, ApiError> {
+        return await send(httpMethod: .delete, endpoint: endpoint, responseType: EmptyResponse.self)
+    }
+
+    func get<T: Decodable>(endpoint: String, responseType: T.Type) async -> Result<T, ApiError> {
+        return await send(
+            httpMethod: .get,
+            endpoint: endpoint,
+            responseType: responseType
+        )
+    }
+
+    func post<T: Decodable>(
+        endpoint: String,
+        request: Codable,
+        responseType: T.Type
+    ) async -> Result<T, ApiError> {
+        return await send(
+            httpMethod: .post,
+            endpoint: endpoint,
+            request: request,
+            responseType: responseType
+        )
+    }
+
+    func update<T: Decodable>(
+        endpoint: String,
+        request: Codable,
+        responseType: T.Type
+    ) async -> Result<T, ApiError> {
+        return await send(
+            httpMethod: .update,
+            endpoint: endpoint,
+            request: request,
+            responseType: responseType
+        )
+    }
+
+    private func send<T: Decodable>(
+        httpMethod: HttpMethod,
+        endpoint: String,
+        request: Codable? = nil,
+        responseType: T.Type
+    ) async -> Result<T, ApiError> {
+        var httpRequest = URLRequest(url: url(endpoint))
+        httpRequest.httpMethod = httpMethod.rawValue
+        httpRequest.setValue(
+            "Bearer \(accessToken)",
+            forHTTPHeaderField: "Authorization"
+        )
+
+        if let request = request {
+            let result = attempt {
+                try JSONEncoder().encode(request)
+            }
+
+            switch result {
+                case .success(let data):
+                    httpRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                    httpRequest.httpBody = data
+                case .failure(let err):
+                    return .failure(ApiError.serializationError(message: err.localizedDescription))
+            }
+        }
+
+        return await attempt {
+            Self.LOGGER.debug(
+                "\(httpMethod.rawValue) \(httpRequest.url?.absoluteString ?? "unknown")"
+            )
+            return try await URLSession.shared.data(for: httpRequest)
+        }.mapError { error in
+            Self.LOGGER.error("Failed request to \(endpoint): \(error.localizedDescription)")
+            return ApiError.invalidResponse
+        }.flatMap { (dataResponse: (Data, URLResponse)) in
+            let (data, response) = dataResponse
+            guard let httpResponse = response as? HTTPURLResponse else {
+                return Result<T, ApiError>.failure(ApiError.invalidResponse)
+            }
+
+            guard httpResponse.statusCode == 200 else {
+                Self.LOGGER.error(
+                    "Failed \(httpMethod.rawValue) to \(endpoint): \(httpResponse.statusCode)"
+                )
+                return .failure(ApiError.failedRequest(httpCode: httpResponse.statusCode))
+            }
+
+            return attempt {
+                try JSONDecoder().decode(responseType, from: data)
+            }.asError(ApiError.serializationError(message:))
+        }
+    }
+
+    private func url(_ endpoint: String) -> URL {
+        return apiUrl.appendingPathComponent(endpoint)
+    }
+}
+
+enum HttpMethod: String {
+    case delete = "DELETE"
+    case get = "GET"
+    case post = "POST"
+    case update = "UPDATE"
+}
+
+public struct EmptyResponse: Codable {
+}
+
+public enum ApiError: Error {
+    case invalidResponse
+    case serializationError(message: String)
+    case failedRequest(httpCode: Int)
+
+    var errorDescription: String? {
+        switch self {
+            case .invalidResponse:
+                return "Invalid response from Gmail API"
+            case .failedRequest(let httpCode):
+                return "Failed response from Gmail API: \(httpCode)"
+            case .serializationError(let message):
+                return "Failed to serialize Gmail object: \(message)"
+        }
+    }
+}
