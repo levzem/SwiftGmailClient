@@ -18,19 +18,17 @@ func loadDotEnv(at path: String = ".env") throws {
 }
 
 class BaseTest: XCTestCase {
-    var gmail: Gmail = Gmail(
-        oauthCredentials: OAuthCredentials(accessToken: "fake", refreshToken: "fake")
-    )
+    var gmail: Gmail = Gmail(credentialsProvider: SimpleCredentialsProvider(accessToken: "lol"))
 
     override func setUp() {
         super.setUp()
         try? loadDotEnv()
-        let accessToken = ProcessInfo.processInfo.environment["GMAIL_OAUTH_ACCESS_TOKEN"]
-        let refreshToken = ProcessInfo.processInfo.environment["GMAIL_OAUTH_REFRESH_TOKEN"]
         self.gmail = Gmail(
-            oauthCredentials: OAuthCredentials(
-                accessToken: accessToken!,
-                refreshToken: refreshToken!
+            credentialsProvider: RefreshingCredentialsProvider(
+                accessToken: ProcessInfo.processInfo.environment["GMAIL_OAUTH_ACCESS_TOKEN"]!,
+                refreshToken: ProcessInfo.processInfo.environment["GMAIL_OAUTH_REFRESH_TOKEN"]!,
+                clientID: ProcessInfo.processInfo.environment["GMAIL_OAUTH_CLIENT_ID"]!,
+                clientSecret: ProcessInfo.processInfo.environment["GMAIL_OAUTH_CLIENT_SECRET"]!
             )
         )
     }

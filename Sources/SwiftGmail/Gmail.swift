@@ -4,20 +4,14 @@ public class Gmail {
 
     private let httpApiClient: HttpApiClient
 
-    init(oauthCredentials: OAuthCredentials) {
+    init(credentialsProvider: CredentialsProvider) {
         self.httpApiClient = HttpApiClient(
             apiUrl: URL(string: "https://gmail.googleapis.com/gmail/v1")!,
-            accessToken: oauthCredentials.accessToken,
-            refreshToken: oauthCredentials.refreshToken
+            credentialsProvider: credentialsProvider
         )
     }
 
     var users: UsersApi {
         UsersApi(httpApiClient: httpApiClient)
     }
-}
-
-public struct OAuthCredentials {
-    let accessToken: String
-    let refreshToken: String
 }

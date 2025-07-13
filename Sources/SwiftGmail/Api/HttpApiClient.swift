@@ -4,14 +4,12 @@ import os
 class HttpApiClient {
     private static let LOGGER: Logger = Logger.logger(HttpApiClient.self)
 
-    var accessToken: String
-    var refreshToken: String
     let apiUrl: URL
+    let credentialsProvider: CredentialsProvider
 
-    init(apiUrl: URL, accessToken: String, refreshToken: String) {
+    init(apiUrl: URL, credentialsProvider: CredentialsProvider) {
         self.apiUrl = apiUrl
-        self.accessToken = accessToken
-        self.refreshToken = refreshToken
+        self.credentialsProvider = credentialsProvider
     }
 
     func delete(endpoint: String) async -> Result<EmptyResponse, ApiError> {
@@ -58,6 +56,7 @@ class HttpApiClient {
         request: Codable? = nil,
         responseType: T.Type
     ) async -> Result<T, ApiError> {
+        let accessToken = await credentialsProvider.getAccessToken()
         var httpRequest = URLRequest(url: url(endpoint))
         httpRequest.httpMethod = httpMethod.rawValue
         httpRequest.setValue(

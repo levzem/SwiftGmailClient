@@ -4,11 +4,11 @@ A Swift library for interacting with the Gmail API, allowing developers to easil
 their iOS and macOS applications.
 
 ## Supported Features
+
 This is still a work in progress, however, feel free to open an issue and request a feature. They are quick to add.
 
-
-- [x] labels 
-- [ ] messages (partial support) 
+- [x] labels
+- [ ] messages (partial support)
 
 ## Installation
 
@@ -51,14 +51,23 @@ To use the Swift Gmail client in your application, follow these steps:
 
    ```swift
     let gmailService = GmailService(
-        oauthCredentials: OAuthCredentials(
-            accessToken: "<USER_ACCESS_TOKEN>", 
-            refreshToken: "<USER_REFRESH_TOKEN>"
-        )
+       credentialsProvider: SimpleCredentialsProvider(accessToken: <ACCESS_TOKEN>)
     )
     ```
 
-4. **List user's labels**: To list a user's email labels, create a `ListLabelsRequest` object and call the `list` method.
+   ```swift
+   let gmailService = GmailService(
+      credentialsProvider: RefreshingCredentialsProvider(
+            accessToken: <ACCESS_TOKEN>, 
+            refreshToken: <REFRESH_TOKEN>, 
+            clientID: <OAUTH_CLIENT_ID>,
+            clientSecret: <OAUTH_CLIENT_SECRET>
+      )
+   )
+   ```
+
+4. **List user's labels**: To list a user's email labels, create a `ListLabelsRequest` object and call the `list`
+   method.
 
    ```swift
    let result = await gmail.users.labels.list()
@@ -82,11 +91,14 @@ To run the tests, you can use the following command in your terminal:
 swift test
 ```
 
-You will need to set up some OAuth credentials. You can do this by creating a `.env` file and adding the following lines:
+You will need to set up some OAuth credentials. You can do this by creating a `.env` file and adding the following
+lines:
 
 ```
 GMAIL_OAUTH_ACCESS_TOKEN=<YOUR_ACCESS_TOKEN>
 GMAIL_OAUTH_REFRESH_TOKEN=<YOUR_REFRESH_TOKEN>
+GMAIL_OAUTH_CLIENT_ID=<YOUR_CLIENT_ID>
+GMAIL_OAUTH_CLIENT_SECRET=<YOUR_CLIENT_SECRET>
 ```
 
 Alternatively, you can set the environment variables directly in your terminal.
