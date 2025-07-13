@@ -1,7 +1,7 @@
 import Testing
 import XCTest
 
-@testable import SwiftGmail
+@testable import SwiftGmailClient
 
 func loadDotEnv(at path: String = ".env") throws {
     let text = try attempt {

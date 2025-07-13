@@ -3,21 +3,21 @@
 import PackageDescription
 
 let package = Package(
-    name: "SwiftGmail",
+    name: "SwiftGmailClient",
     platforms: [
       .macOS(.v11)
     ],
     products: [
         .library(
-            name: "SwiftGmail",
-            targets: ["SwiftGmail"]),
+            name: "SwiftGmailClient",
+            targets: ["SwiftGmailClient"]),
     ],
     targets: [
         .target(
-            name: "SwiftGmail"),
+            name: "SwiftGmailClient"),
         .testTarget(
-            name: "SwiftGmailTests",
-            dependencies: ["SwiftGmail"]
+            name: "SwiftGmailClientTests",
+            dependencies: ["SwiftGmailClient"]
         ),
     ]
 )

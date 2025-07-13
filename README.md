@@ -17,12 +17,12 @@ You can install the Swift Gmail SDK using the Swift Package Manager. Add the fol
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/levzem/SwiftGmail", from: "1.0.0")
+    .package(url: "https://github.com/levzem/SwiftGmailClient", from: "0.1.0")
 ],
 targets: [
     .target(
         name: "YourApp",
-        dependencies: ["SwiftGmail"]
+        dependencies: ["SwiftGmailClient"]
     )
 ]
 ```
@@ -44,7 +44,7 @@ To use the Swift Gmail client in your application, follow these steps:
 2. **Import the SDK**: In your Swift file, import the Swift Gmail module.
 
    ```swift
-   import SwiftGmail
+   import SwiftGmailClient
    ```
 
 3. **Initialize the client**: Initialize the client with your user's OAuth 2.0 credentials.

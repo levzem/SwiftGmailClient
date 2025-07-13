@@ -1,5 +1,5 @@
 import Testing
-@testable import SwiftGmail
+@testable import SwiftGmailClient
 
 class LabelsApiTest: BaseTest {
 
