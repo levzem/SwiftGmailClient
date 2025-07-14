@@ -82,12 +82,36 @@ public struct ListMessagesRequest: Codable {
     public let q: String?
     public let labelIds: [String]?
     public let includeSpamTrash: Bool?
+
+    public init(
+        maxResults: UInt32? = nil,
+        pageToken: String? = nil,
+        q: String? = nil,
+        labelIds: [String]? = nil,
+        includeSpamTrash: Bool? = nil
+    ) {
+        self.maxResults = maxResults
+        self.pageToken = pageToken
+        self.q = q
+        self.labelIds = labelIds
+        self.includeSpamTrash = includeSpamTrash
+    }
 }
 
 public struct ListMessagesResponse: Codable {
     public let messages: [MessageId]
     public let nextPageToken: String?
     public let resultSizeEstimate: Int?
+
+    public init(
+        messages: [MessageId],
+        nextPageToken: String? = nil,
+        resultSizeEstimate: Int? = nil
+    ) {
+        self.messages = messages
+        self.nextPageToken = nextPageToken
+        self.resultSizeEstimate = resultSizeEstimate
+    }
 }
 
 public struct ModifyMessageRequest: Codable {
@@ -102,18 +126,33 @@ public struct ModifyMessageRequest: Codable {
 
 public struct SendMessageRequest: Codable {
     public let raw: String
+
+    public init(raw: String) {
+        self.raw = raw
+    }
 }
 
 // MARK: - Models
 public struct MessageId: Codable, Equatable {
     public let id: String
     public let threadId: String
+
+    public init(id: String, threadId: String) {
+        self.id = id
+        self.threadId = threadId
+    }
 }
 
 public struct MessageMeta: Codable, Equatable {
     public let id: String
     public let threadId: String
     public let labelIds: [String]
+
+    public init(id: String, threadId: String, labelIds: [String]) {
+        self.id = id
+        self.threadId = threadId
+        self.labelIds = labelIds
+    }
 }
 
 public struct Message: Codable, Equatable {
@@ -125,6 +164,26 @@ public struct Message: Codable, Equatable {
     public let sizeEstimate: Int?
     public let historyId: String?
     public let internalDate: String?
+
+    public init(
+        id: String,
+        threadId: String,
+        labelIds: [String],
+        snippet: String,
+        payload: MessagePayload,
+        sizeEstimate: Int? = nil,
+        historyId: String? = nil,
+        internalDate: String? = nil
+    ) {
+        self.id = id
+        self.threadId = threadId
+        self.labelIds = labelIds
+        self.snippet = snippet
+        self.payload = payload
+        self.sizeEstimate = sizeEstimate
+        self.historyId = historyId
+        self.internalDate = internalDate
+    }
 }
 
 public struct MessagePayload: Codable, Equatable {
@@ -134,15 +193,42 @@ public struct MessagePayload: Codable, Equatable {
     public let headers: [MessageHeader]
     public let body: MessageBody?
     public let parts: [MessagePayload]?
+
+    public init(
+        partId: String? = nil,
+        mimeType: String,
+        filename: String? = nil,
+        headers: [MessageHeader],
+        body: MessageBody? = nil,
+        parts: [MessagePayload]? = nil
+    ) {
+        self.partId = partId
+        self.mimeType = mimeType
+        self.filename = filename
+        self.headers = headers
+        self.body = body
+        self.parts = parts
+    }
 }
 
 public struct MessageHeader: Codable, Equatable {
     public let name: String
     public let value: String
+
+    public init(name: String, value: String) {
+        self.name = name
+        self.value = value
+    }
 }
 
 public struct MessageBody: Codable, Equatable {
     public let attachmentId: String?
     public let size: Int
     public let data: String?
+
+    public init(attachmentId: String? = nil, size: Int, data: String? = nil) {
+        self.attachmentId = attachmentId
+        self.size = size
+        self.data = data
+    }
 }

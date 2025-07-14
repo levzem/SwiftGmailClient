@@ -62,6 +62,10 @@ public struct CreateLabelRequest: Codable {
 
 public struct ListLabelsResponse: Codable {
     public let labels: [Label]
+
+    public init(labels: [Label]) {
+        self.labels = labels
+    }
 }
 
 public struct UpdateLabelRequest: Codable {
@@ -69,6 +73,18 @@ public struct UpdateLabelRequest: Codable {
     public let name: String
     public let labelListVisibility: LabelListVisibility
     public let messageListVisibility: MessageListVisibility
+
+    public init(
+        id: String,
+        name: String,
+        labelListVisibility: LabelListVisibility,
+        messageListVisibility: MessageListVisibility
+    ) {
+        self.id = id
+        self.name = name
+        self.labelListVisibility = labelListVisibility
+        self.messageListVisibility = messageListVisibility
+    }
 }
 
 // MARK: - Models
@@ -78,6 +94,20 @@ public struct Label: Codable, Equatable {
     public let labelListVisibility: LabelListVisibility?
     public let messageListVisibility: MessageListVisibility?
     public let type: Type?
+
+    public init(
+        id: String,
+        name: String,
+        labelListVisibility: LabelListVisibility? = nil,
+        messageListVisibility: MessageListVisibility? = nil,
+        type: Type? = nil
+    ) {
+        self.id = id
+        self.name = name
+        self.labelListVisibility = labelListVisibility
+        self.messageListVisibility = messageListVisibility
+        self.type = type
+    }
 }
 
 public struct FullLabel: Codable, Equatable {
@@ -90,6 +120,28 @@ public struct FullLabel: Codable, Equatable {
     public let messagesUnread: Int
     public let threadsTotal: Int
     public let threadsUnread: Int
+
+    public init(
+        id: String,
+        name: String,
+        labelListVisibility: LabelListVisibility? = nil,
+        messageListVisibility: MessageListVisibility? = nil,
+        type: Type,
+        messagesTotal: Int,
+        messagesUnread: Int,
+        threadsTotal: Int,
+        threadsUnread: Int
+    ) {
+        self.id = id
+        self.name = name
+        self.labelListVisibility = labelListVisibility
+        self.messageListVisibility = messageListVisibility
+        self.type = type
+        self.messagesTotal = messagesTotal
+        self.messagesUnread = messagesUnread
+        self.threadsTotal = threadsTotal
+        self.threadsUnread = threadsUnread
+    }
 }
 
 public enum MessageListVisibility: String, Codable, CaseIterable {
