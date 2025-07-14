@@ -65,84 +65,84 @@ public struct MessagesApi {
 
 // MARK: - Request and Response Models
 public struct BatchModifyMessagesRequest: Codable {
-    init(ids: [String], addLabelIds: [String]? = nil, removeLabelIds: [String]? = nil) {
+    public init(ids: [String], addLabelIds: [String]? = nil, removeLabelIds: [String]? = nil) {
         self.ids = ids
         self.addLabelIds = addLabelIds
         self.removeLabelIds = removeLabelIds
     }
 
-    let ids: [String]
-    let addLabelIds: [String]?
-    let removeLabelIds: [String]?
+    public let ids: [String]
+    public let addLabelIds: [String]?
+    public let removeLabelIds: [String]?
 }
 
 public struct ListMessagesRequest: Codable {
-    let maxResults: UInt32?
-    let pageToken: String?
-    let q: String?
-    let labelIds: [String]?
-    let includeSpamTrash: Bool?
+    public let maxResults: UInt32?
+    public let pageToken: String?
+    public let q: String?
+    public let labelIds: [String]?
+    public let includeSpamTrash: Bool?
 }
 
 public struct ListMessagesResponse: Codable {
-    let messages: [MessageId]
-    let nextPageToken: String?
-    let resultSizeEstimate: Int?
+    public let messages: [MessageId]
+    public let nextPageToken: String?
+    public let resultSizeEstimate: Int?
 }
 
 public struct ModifyMessageRequest: Codable {
-    let addLabelIds: [String]?
-    let removeLabelIds: [String]?
+    public let addLabelIds: [String]?
+    public let removeLabelIds: [String]?
 
-    init(addLabelIds: [String]? = nil, removeLabelIds: [String]? = nil) {
+    public init(addLabelIds: [String]? = nil, removeLabelIds: [String]? = nil) {
         self.addLabelIds = addLabelIds
         self.removeLabelIds = removeLabelIds
     }
 }
 
 public struct SendMessageRequest: Codable {
-    let raw: String
+    public let raw: String
 }
 
 // MARK: - Models
 public struct MessageId: Codable, Equatable {
-    let id: String
-    let threadId: String
+    public let id: String
+    public let threadId: String
 }
 
 public struct MessageMeta: Codable, Equatable {
-    let id: String
-    let threadId: String
-    let labelIds: [String]
+    public let id: String
+    public let threadId: String
+    public let labelIds: [String]
 }
 
 public struct Message: Codable, Equatable {
-    let id: String
-    let threadId: String
-    let labelIds: [String]
-    let snippet: String
-    let payload: MessagePayload
-    let sizeEstimate: Int?
-    let historyId: String?
-    let internalDate: String?
+    public let id: String
+    public let threadId: String
+    public let labelIds: [String]
+    public let snippet: String
+    public let payload: MessagePayload
+    public let sizeEstimate: Int?
+    public let historyId: String?
+    public let internalDate: String?
 }
 
 public struct MessagePayload: Codable, Equatable {
-    let partId: String?
-    let mimeType: String
-    let filename: String?
-    let headers: [MessageHeader]
-    let body: MessageBody?
-    let parts: [MessagePayload]?
+    public let partId: String?
+    public let mimeType: String
+    public let filename: String?
+    public let headers: [MessageHeader]
+    public let body: MessageBody?
+    public let parts: [MessagePayload]?
 }
 
 public struct MessageHeader: Codable, Equatable {
-    let name: String
-    let value: String
+    public let name: String
+    public let value: String
 }
 
 public struct MessageBody: Codable, Equatable {
-    let attachmentId: String?
-    let size: Int
-    let data: String?
+    public let attachmentId: String?
+    public let size: Int
+    public let data: String?
 }

@@ -45,11 +45,11 @@ public struct LabelsApi {
 
 // MARK: - Request and Response Models
 public struct CreateLabelRequest: Codable {
-    let name: String
-    let labelListVisibility: LabelListVisibility?
-    let messageListVisibility: MessageListVisibility?
+    public let name: String
+    public let labelListVisibility: LabelListVisibility?
+    public let messageListVisibility: MessageListVisibility?
 
-    init(
+    public init(
         name: String,
         labelListVisibility: LabelListVisibility? = nil,
         messageListVisibility: MessageListVisibility? = nil
@@ -61,35 +61,35 @@ public struct CreateLabelRequest: Codable {
 }
 
 public struct ListLabelsResponse: Codable {
-    let labels: [Label]
+    public let labels: [Label]
 }
 
 public struct UpdateLabelRequest: Codable {
-    let id: String
-    let name: String
-    let labelListVisibility: LabelListVisibility
-    let messageListVisibility: MessageListVisibility
+    public let id: String
+    public let name: String
+    public let labelListVisibility: LabelListVisibility
+    public let messageListVisibility: MessageListVisibility
 }
 
 // MARK: - Models
 public struct Label: Codable, Equatable {
-    let id: String
-    let name: String
-    let labelListVisibility: LabelListVisibility?
-    let messageListVisibility: MessageListVisibility?
-    let type: Type?
+    public let id: String
+    public let name: String
+    public let labelListVisibility: LabelListVisibility?
+    public let messageListVisibility: MessageListVisibility?
+    public let type: Type?
 }
 
 public struct FullLabel: Codable, Equatable {
-    let id: String
-    let name: String
-    let labelListVisibility: LabelListVisibility?
-    let messageListVisibility: MessageListVisibility?
-    let type: Type
-    let messagesTotal: Int
-    let messagesUnread: Int
-    let threadsTotal: Int
-    let threadsUnread: Int
+    public let id: String
+    public let name: String
+    public let labelListVisibility: LabelListVisibility?
+    public let messageListVisibility: MessageListVisibility?
+    public let type: Type
+    public let messagesTotal: Int
+    public let messagesUnread: Int
+    public let threadsTotal: Int
+    public let threadsUnread: Int
 }
 
 public enum MessageListVisibility: String, Codable, CaseIterable {
