@@ -11,7 +11,7 @@ public class Gmail {
         )
     }
 
-    var users: UsersApi {
+    public var users: UsersApi {
         UsersApi(httpApiClient: httpApiClient)
     }
 }

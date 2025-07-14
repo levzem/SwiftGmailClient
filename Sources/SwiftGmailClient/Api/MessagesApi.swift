@@ -1,4 +1,4 @@
-struct MessagesApi {
+public struct MessagesApi {
     private let apiClient: HttpApiClient
 
     init(httpApiClient: HttpApiClient) {

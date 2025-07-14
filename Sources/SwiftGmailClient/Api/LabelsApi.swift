@@ -1,4 +1,4 @@
-struct LabelsApi {
+public struct LabelsApi {
     private let apiClient: HttpApiClient
 
     init(httpApiClient: HttpApiClient) {
