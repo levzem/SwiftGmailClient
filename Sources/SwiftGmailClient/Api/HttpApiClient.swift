@@ -78,6 +78,7 @@ class HttpApiClient {
             }
         }
 
+        print("\(httpMethod.rawValue) \(httpRequest.url?.absoluteString ?? "unknown")")
         return await attempt {
             Self.LOGGER.debug(
                 "\(httpMethod.rawValue) \(httpRequest.url?.absoluteString ?? "unknown")"
@@ -103,6 +104,8 @@ class HttpApiClient {
                 return .failure(ApiError.failedRequest(httpCode: httpResponse.statusCode))
             }
 
+            let lol = String(data: data, encoding: .utf8)!
+            print(lol)
             return attempt {
                 try JSONDecoder().decode(responseType, from: data)
             }.asError(ApiError.serializationError(message:))
@@ -110,7 +113,7 @@ class HttpApiClient {
     }
 
     private func url(_ endpoint: String) -> URL {
-        return apiUrl.appendingPathComponent(endpoint)
+        return URL(string: "\(apiUrl.absoluteString)\(endpoint)")!
     }
 }
 

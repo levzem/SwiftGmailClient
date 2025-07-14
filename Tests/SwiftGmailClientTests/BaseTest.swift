@@ -19,6 +19,7 @@ func loadDotEnv(at path: String = ".env") throws {
 
 class BaseTest: XCTestCase {
     var gmail: Gmail = Gmail(credentialsProvider: SimpleCredentialsProvider(accessToken: "lol"))
+    var testEmail: String = ""
 
     override func setUp() {
         super.setUp()
@@ -31,5 +32,6 @@ class BaseTest: XCTestCase {
                 clientSecret: ProcessInfo.processInfo.environment["GMAIL_OAUTH_CLIENT_SECRET"]!
             )
         )
+        testEmail = ProcessInfo.processInfo.environment["TEST_EMAIL"]!
     }
 }

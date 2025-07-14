@@ -6,13 +6,19 @@ struct MessagesApi {
     }
 
     @discardableResult
-    func batchModifyMessages(
-        request: BatchModifyRequest
+    func batchModify(
+        request: BatchModifyMessagesRequest
     ) async -> Result<EmptyResponse, ApiError> {
         return await apiClient.post(
             endpoint: "/users/me/messages/batchModify",
             request: request,
             responseType: EmptyResponse.self
+        )
+    }
+
+    public func delete(messageId: String) async -> Result<EmptyResponse, ApiError> {
+        return await apiClient.delete(
+            endpoint: "/users/me/messages/\(messageId)"
         )
     }
 
@@ -31,26 +37,34 @@ struct MessagesApi {
     }
 
     public func modify(messageId: String, request: ModifyMessageRequest) async -> Result<
-        Message, ApiError
+        MessageMeta, ApiError
     > {
         return await apiClient.post(
             endpoint: "/users/me/messages/\(messageId)/modify",
             request: request,
-            responseType: Message.self
+            responseType: MessageMeta.self
         )
     }
 
-    public func send(request: SendMessageRequest) async -> Result<Message, ApiError> {
+    public func send(request: SendMessageRequest) async -> Result<MessageMeta, ApiError> {
         return await apiClient.post(
             endpoint: "/users/me/messages/send",
             request: request,
-            responseType: Message.self
+            responseType: MessageMeta.self
+        )
+    }
+
+    public func trash(messageId: String) async -> Result<MessageMeta, ApiError> {
+        return await apiClient.post(
+            endpoint: "/users/me/messages/\(messageId)/trash",
+            request: EmptyResponse(),
+            responseType: MessageMeta.self
         )
     }
 }
 
 // MARK: - Request and Response Models
-public struct BatchModifyRequest: Codable {
+public struct BatchModifyMessagesRequest: Codable {
     init(ids: [String], addLabelIds: [String]? = nil, removeLabelIds: [String]? = nil) {
         self.ids = ids
         self.addLabelIds = addLabelIds
@@ -71,7 +85,7 @@ public struct ListMessagesRequest: Codable {
 }
 
 public struct ListMessagesResponse: Codable {
-    let messages: [MessageId]?
+    let messages: [MessageId]
     let nextPageToken: String?
     let resultSizeEstimate: Int?
 }
@@ -91,12 +105,18 @@ public struct SendMessageRequest: Codable {
 }
 
 // MARK: - Models
-public struct MessageId: Codable {
+public struct MessageId: Codable, Equatable {
     let id: String
     let threadId: String
 }
 
-public struct Message: Codable {
+public struct MessageMeta: Codable, Equatable {
+    let id: String
+    let threadId: String
+    let labelIds: [String]
+}
+
+public struct Message: Codable, Equatable {
     let id: String
     let threadId: String
     let labelIds: [String]
@@ -107,7 +127,7 @@ public struct Message: Codable {
     let internalDate: String?
 }
 
-public struct MessagePayload: Codable {
+public struct MessagePayload: Codable, Equatable {
     let partId: String?
     let mimeType: String
     let filename: String?
@@ -116,12 +136,12 @@ public struct MessagePayload: Codable {
     let parts: [MessagePayload]?
 }
 
-public struct MessageHeader: Codable {
+public struct MessageHeader: Codable, Equatable {
     let name: String
     let value: String
 }
 
-public struct MessageBody: Codable {
+public struct MessageBody: Codable, Equatable {
     let attachmentId: String?
     let size: Int
     let data: String?
