@@ -6,7 +6,7 @@ public struct MessagesApi {
     }
 
     @discardableResult
-    func batchModify(
+    public func batchModify(
         request: BatchModifyMessagesRequest
     ) async -> Result<EmptyResponse, ApiError> {
         return await apiClient.post(
