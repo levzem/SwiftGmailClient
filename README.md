@@ -5,7 +5,7 @@ their iOS and macOS applications.
 
 ## Supported Features
 
-This is still a work in progress, however, feel free to open an issue and request a feature. They are quick to add.
+This is still a work in progress and my first Swift project, however, feel free to open an issue and request a feature. They are quick to add.
 
 - [x] labels
 - [ ] messages (partial support)
@@ -17,7 +17,7 @@ You can install the Swift Gmail SDK using the Swift Package Manager. Add the fol
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/levzem/SwiftGmailClient", from: "0.1.1")
+    .package(url: "https://github.com/levzem/SwiftGmailClient", from: "0.1.2")
 ],
 targets: [
     .target(
