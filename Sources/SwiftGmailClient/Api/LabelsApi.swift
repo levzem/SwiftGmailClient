@@ -44,7 +44,7 @@ public struct LabelsApi {
 }
 
 // MARK: - Request and Response Models
-public struct CreateLabelRequest: Codable {
+public struct CreateLabelRequest: Codable, Hashable, Sendable {
     public let name: String
     public let labelListVisibility: LabelListVisibility?
     public let messageListVisibility: MessageListVisibility?
@@ -60,7 +60,7 @@ public struct CreateLabelRequest: Codable {
     }
 }
 
-public struct ListLabelsResponse: Codable {
+public struct ListLabelsResponse: Codable, Hashable, Sendable {
     public let labels: [Label]
 
     public init(labels: [Label]) {
@@ -68,7 +68,7 @@ public struct ListLabelsResponse: Codable {
     }
 }
 
-public struct UpdateLabelRequest: Codable {
+public struct UpdateLabelRequest: Codable, Hashable, Sendable {
     public let id: String
     public let name: String
     public let labelListVisibility: LabelListVisibility
@@ -88,7 +88,7 @@ public struct UpdateLabelRequest: Codable {
 }
 
 // MARK: - Models
-public struct Label: Codable, Equatable {
+public struct Label: Codable, Equatable, Hashable, Sendable {
     public let id: String
     public let name: String
     public let labelListVisibility: LabelListVisibility?
@@ -110,7 +110,7 @@ public struct Label: Codable, Equatable {
     }
 }
 
-public struct FullLabel: Codable, Equatable {
+public struct FullLabel: Codable, Equatable, Hashable, Sendable {
     public let id: String
     public let name: String
     public let labelListVisibility: LabelListVisibility?
@@ -144,18 +144,18 @@ public struct FullLabel: Codable, Equatable {
     }
 }
 
-public enum MessageListVisibility: String, Codable, CaseIterable {
+public enum MessageListVisibility: String, CaseIterable, Codable, Sendable {
     case show = "show"
     case hide = "hide"
 }
 
-public enum LabelListVisibility: String, Codable, CaseIterable {
+public enum LabelListVisibility: String, CaseIterable, Codable, Sendable {
     case labelShow = "labelShow"
     case labelHide = "labelHide"
     case labelShowIfUnread = "labelShowIfUnread"
 }
 
-public enum Type: String, Codable, CaseIterable {
+public enum Type: String, CaseIterable, Codable, Sendable {
     case system = "system"
     case user = "user"
 }

@@ -64,7 +64,7 @@ public struct MessagesApi {
 }
 
 // MARK: - Request and Response Models
-public struct BatchModifyMessagesRequest: Codable {
+public struct BatchModifyMessagesRequest: Codable, Hashable, Sendable {
     public init(ids: [String], addLabelIds: [String]? = nil, removeLabelIds: [String]? = nil) {
         self.ids = ids
         self.addLabelIds = addLabelIds
@@ -76,7 +76,7 @@ public struct BatchModifyMessagesRequest: Codable {
     public let removeLabelIds: [String]?
 }
 
-public struct ListMessagesRequest: Codable {
+public struct ListMessagesRequest: Codable, Hashable, Sendable {
     public let maxResults: UInt32?
     public let pageToken: String?
     public let q: String?
@@ -98,7 +98,7 @@ public struct ListMessagesRequest: Codable {
     }
 }
 
-public struct ListMessagesResponse: Codable {
+public struct ListMessagesResponse: Codable, Hashable, Sendable {
     public let messages: [MessageId]
     public let nextPageToken: String?
     public let resultSizeEstimate: Int?
@@ -114,7 +114,7 @@ public struct ListMessagesResponse: Codable {
     }
 }
 
-public struct ModifyMessageRequest: Codable {
+public struct ModifyMessageRequest: Codable, Hashable, Sendable {
     public let addLabelIds: [String]?
     public let removeLabelIds: [String]?
 
@@ -124,7 +124,7 @@ public struct ModifyMessageRequest: Codable {
     }
 }
 
-public struct SendMessageRequest: Codable {
+public struct SendMessageRequest: Codable, Hashable, Sendable {
     public let raw: String
 
     public init(raw: String) {
@@ -133,7 +133,7 @@ public struct SendMessageRequest: Codable {
 }
 
 // MARK: - Models
-public struct MessageId: Codable, Equatable {
+public struct MessageId: Codable, Equatable, Hashable, Sendable {
     public let id: String
     public let threadId: String
 
@@ -143,7 +143,7 @@ public struct MessageId: Codable, Equatable {
     }
 }
 
-public struct MessageMeta: Codable, Equatable {
+public struct MessageMeta: Codable, Equatable, Hashable, Sendable {
     public let id: String
     public let threadId: String
     public let labelIds: [String]
@@ -155,7 +155,7 @@ public struct MessageMeta: Codable, Equatable {
     }
 }
 
-public struct Message: Codable, Equatable {
+public struct Message: Codable, Equatable, Hashable, Sendable {
     public let id: String
     public let threadId: String
     public let labelIds: [String]
@@ -186,7 +186,7 @@ public struct Message: Codable, Equatable {
     }
 }
 
-public struct MessagePayload: Codable, Equatable {
+public struct MessagePayload: Codable, Equatable, Hashable, Sendable {
     public let partId: String?
     public let mimeType: String
     public let filename: String?
@@ -211,7 +211,7 @@ public struct MessagePayload: Codable, Equatable {
     }
 }
 
-public struct MessageHeader: Codable, Equatable {
+public struct MessageHeader: Codable, Equatable, Hashable, Sendable {
     public let name: String
     public let value: String
 
@@ -221,7 +221,7 @@ public struct MessageHeader: Codable, Equatable {
     }
 }
 
-public struct MessageBody: Codable, Equatable {
+public struct MessageBody: Codable, Equatable, Hashable, Sendable {
     public let attachmentId: String?
     public let size: Int
     public let data: String?

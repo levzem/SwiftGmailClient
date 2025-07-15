@@ -124,10 +124,10 @@ enum HttpMethod: String {
     case put = "PUT"
 }
 
-public struct EmptyResponse: Codable {
+public struct EmptyResponse: Codable, Hashable, Sendable {
 }
 
-public enum ApiError: Error, Equatable {
+public enum ApiError: Error, Equatable, Sendable {
     case invalidResponse
     case serializationError(message: String)
     case failedRequest(httpCode: Int)
