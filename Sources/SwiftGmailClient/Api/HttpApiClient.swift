@@ -104,8 +104,6 @@ class HttpApiClient {
                 return .failure(ApiError.failedRequest(httpCode: httpResponse.statusCode))
             }
 
-            let lol = String(data: data, encoding: .utf8)!
-            print(lol)
             return attempt {
                 try JSONDecoder().decode(responseType, from: data)
             }.asError(ApiError.serializationError(message:))
